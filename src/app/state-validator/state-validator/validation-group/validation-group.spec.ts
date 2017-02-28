@@ -64,4 +64,74 @@ describe('ValidationGroup', () => {
     expect(vGroup2.validate(invalidInput1)).toBeFalsy();
     expect(vGroup2.validate(invalidInput2)).toBeFalsy();
   });
+
+  it('should be able to support "OR" validation type for ValidationCase', () => {
+    let vCase1 = new ValidationCase('foo', 'bar', 'eq');
+    let vCase2 = new ValidationCase('baz', 100, 'gt');
+    let vGroup = new ValidationGroup('OR', [vCase1, vCase2]);
+    let validInput = {
+      foo: 'bar',
+      baz: 123
+    };
+    let invalidInput = {
+      foo: 'baz',
+      baz: 125
+    };
+
+    expect(vGroup.validate(validInput)).toBeTruthy();
+    expect(vGroup.validate(invalidInput)).toBeFalsy();
+  });
+
+  it('should be able to support "OR" validation for nested ValidationGroup', () => {
+    let vCase1 = new ValidationCase('foo', 'bar', 'eq');
+    let vCase2 = new ValidationCase('baz', 100, 'gt');
+    let vCase3 = new ValidationCase('bat', 50, 'lt');
+    let vGroup1 = new ValidationGroup('OR', [vCase1, vCase2]);
+    let vGroup2 = new ValidationGroup('OR', [vCase3, vGroup1]);
+
+    let validInput1 = {
+      foo: 'bar',
+      baz: 199,
+      bat: 52
+    };
+
+    let validInput2 = {
+      foo: 'baz',
+      baz: 101,
+      bat: 52
+    };
+
+    let invalidInput = {
+      foo: 'baz',
+      bar: 101,
+      bat: 20
+    };
+
+    expect(vGroup2.validate(validInput1)).toBeTruthy();
+    expect(vGroup2.validate(validInput2)).toBeTruthy();
+    expect(vGroup2.validate(invalidInput)).toBeFalsy();
+  });
+
+  it('should be able to support complex validation conditions', () => {
+    let vCase1 = new ValidationCase('foo', 'bar', 'eq');
+    let vCase2 = new ValidationCase('baz', 100, 'gt');
+    let vCase3 = new ValidationCase('bat', 50, 'lt');
+    let vGroup1 = new ValidationGroup('OR', [vCase1, vCase2]);
+    let vGroup2 = new ValidationGroup('AND', [vCase3, vGroup1]);
+
+    let validInput = {
+      foo: 'baz',
+      baz: 50,
+      bat: 65
+    };
+
+    let invalidInput = {
+      foo: 'baz',
+      bar: 101,
+      bat: 120
+    };
+
+    expect(vGroup2.validate(validInput)).toBeTruthy();
+    expect(vGroup2.validate(invalidInput)).toBeFalsy();
+  });
 });

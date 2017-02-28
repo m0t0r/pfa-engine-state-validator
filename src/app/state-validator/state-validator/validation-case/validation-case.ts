@@ -7,7 +7,7 @@ export class ValidationCase {
   validate(input: any): boolean {
     let _key = Object.keys(input)[0];
 
-    switch (this.operator) {
+    switch (this.operator.toLowerCase()) {
       case 'eq': {
         return _key === this.attribute && input[_key] === this.value;
       }
