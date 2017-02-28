@@ -2,7 +2,7 @@ import { ValidationCase } from './validation-case';
 
 describe('ValidationCase', () => {
 
-  it('should be able to an instance', () => {
+  it('should be able to return an instance', () => {
     let testCase = new ValidationCase('foo', 'bar');
 
     expect(testCase.getValue()).toBe('bar');

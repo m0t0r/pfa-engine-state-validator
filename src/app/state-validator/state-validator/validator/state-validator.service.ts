@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ValidationCase } from './validation-case';
-import { WState } from './interfaces';
+import { ValidationCase } from '../validation-case/validation-case';
+import { WState } from '../interfaces';
 
 @Injectable()
 export class StateValidator {

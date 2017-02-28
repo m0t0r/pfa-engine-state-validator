@@ -15,7 +15,7 @@ export class ValidationCase {
         let _input = Number(input[_key]);
         let _value = Number(this.value);
 
-        if (isNaN(_input) || isNaN(_value)) {
+        if ((_key === this.attribute) && (isNaN(_input) || isNaN(_value))) {
           this.throwError(this.operator);
         }
 
@@ -24,6 +24,10 @@ export class ValidationCase {
       case 'lt': {
         let _input = Number(input[_key]);
         let _value = Number(this.value);
+
+        if ((_key === this.attribute) && (isNaN(_input) || isNaN(_value))) {
+          this.throwError(this.operator);
+        }
 
         if (isNaN(_input) || isNaN(_value)) {
           this.throwError(this.operator);
